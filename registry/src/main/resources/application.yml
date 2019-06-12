@@ -1,0 +1,16 @@
+
+spring:
+  output:
+    ansi:
+      enabled:
+        always
+  application:
+    name:
+      registry
+server:
+  port:
+    8761
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+

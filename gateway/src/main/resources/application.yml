@@ -1,0 +1,43 @@
+spring:
+  output:
+    ansi:
+      enabled:
+        always
+
+  application:
+    name:
+      gateway
+
+server:
+  port:
+    8088
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+
+  instance:
+    preferIpAddress: true
+
+logging:
+  level:
+    org:
+      springframework:
+        debug
+
+zuul:
+  sensitiveHeaders: Cookie,Set-Cookie,Authorization
+  routes:
+    auth-service:
+      serviceId: auth-service
+
+    account-service:
+      serviceId: account-service
+
+      service-registry:
+        serviceId: registry
+
+      ecom-service:
+        serviceId: ecom-service
+

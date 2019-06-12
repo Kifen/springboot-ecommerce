@@ -1,0 +1,36 @@
+spring:
+  output:
+    ansi:
+      enabled:
+        always
+
+
+  application:
+    name:
+      account-service
+
+  jpa:
+    showSql:
+      true
+
+  h2:
+    console:
+      enabled:
+        true
+
+  jackson:
+    serializaton:
+      FAIL_ON_EMPTY_BEANS:
+        false
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone:
+        http://localhost:8761/eureka
+
+server:
+  port:
+    8081
+
+
