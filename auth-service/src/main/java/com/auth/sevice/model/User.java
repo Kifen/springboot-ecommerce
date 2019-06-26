@@ -6,8 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -29,11 +29,8 @@ public class User {
     @Size(max = 100)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Role> roles = new ArrayList<>();
 
     public User(String name, String username, String email, @Size(max = 60) String password) {
         this.name = name;
@@ -44,17 +41,6 @@ public class User {
 
     @Transient
     public void addRole(Role role){
-        String x = role.getRoleName().name();
-        switch (x){
-            case "USER":
-                this.roles.add(new Role(RoleName.USER));
-                break;
-            case "ADMIN":
-                this.roles.add(new Role(RoleName.ADMIN));
-                break;
-            default:
-                this.roles.add(new Role(RoleName.USER));
-                break;
-        }
+        roles.add(role);
     }
 }

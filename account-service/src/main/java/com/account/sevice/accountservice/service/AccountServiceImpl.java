@@ -1,6 +1,7 @@
 package com.account.sevice.accountservice.service;
 
 
+import com.account.sevice.accountservice.client.CartServiceClient;
 import com.account.sevice.accountservice.model.Account;
 import com.account.sevice.accountservice.model.SignupRequest;
 import com.account.sevice.accountservice.model.User;
@@ -28,6 +29,8 @@ public class AccountServiceImpl implements AccountService{
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CartServiceClient cartServiceClient;
 
     @Override
     public Account create(@NotNull SignupRequest signUpRequest) {
@@ -49,7 +52,9 @@ public class AccountServiceImpl implements AccountService{
         account.setLastLogIn(LocalDateTime.now());
         user.setAccount(account);
         account.setUser(user);
-        userRepository.save(user);
+
+        cartServiceClient.createCart(signUpRequest.getEmail());
+        log.info("Cart created for new user");userRepository.save(user);
 
         log.info("New account created: "+account.getEmail());
         return account;

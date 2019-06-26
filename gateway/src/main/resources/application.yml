@@ -41,3 +41,6 @@ zuul:
       ecom-service:
         serviceId: ecom-service
 
+      cart-service:
+        serviceId: cart-service
+

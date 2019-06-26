@@ -74,7 +74,9 @@ public class AuthController {
     @PostMapping(Mappings.SIGNUP)
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest){
         if(userRepository.existsByEmail(signUpRequest.getEmail())){
-            return new ResponseEntity(new ApiResponse(false, "Account With Email Already Exists..."), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new ApiResponse
+                    (false, "Account With Email[" +signUpRequest.getEmail()+ "]Already Exists..."),
+                    HttpStatus.BAD_REQUEST);
         }
 
 
@@ -82,16 +84,17 @@ public class AuthController {
                 signUpRequest.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role role = new Role(RoleName.USER);
+        //authService.addUserRole(role, signUpRequest.getEmail());
         user.addRole(role);
 
-        User result = userRepository.save(user);
         accountServiceClient.createUser(signUpRequest);
+        User result = userRepository.save(user);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path(Mappings.USERS_API+"/{email}")
                 .buildAndExpand(result.getUsername()).toUri();
 
         return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "User registered successfully"));
+                .body(new ApiResponse(true, "User [" +signUpRequest.getEmail() +"] registered successfully"));
     }
 }

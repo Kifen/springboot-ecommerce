@@ -18,6 +18,7 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
+
     @PostMapping(Mappings.CREATE_ACCOUNT)
     public ResponseEntity<?> createNewAccount(@RequestBody SignupRequest signupRequest){
 
